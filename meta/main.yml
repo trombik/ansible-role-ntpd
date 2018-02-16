@@ -4,11 +4,12 @@ galaxy_info:
   description: Configures ntpd from ntp.org
   company: Reallyenglish
   license: BSD
-  min_ansible_version: 2.0
+  min_ansible_version: 2.4
   platforms:
   - name: FreeBSD
     versions:
     - 10.3
+    - 11.1
 #  - name: OpenBSD
 #    versions:
 #    - 6.0

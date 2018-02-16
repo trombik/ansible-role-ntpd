@@ -3,9 +3,9 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- include: "install-{{ ansible_os_family }}.yml"
+- include_tasks: "install-{{ ansible_os_family }}.yml"
 
-- include: "configure-{{ ansible_os_family }}.yml"
+- include_tasks: "configure-{{ ansible_os_family }}.yml"
 
 - name: Create ntpd_script_dir
   file:
@@ -22,7 +22,7 @@
   command: ntpd --version
   register: register_ntpd_version
   changed_when: false
-  always_run: yes
+  check_mode: no
 
 - name: Set ntpd_supports_pool
   set_fact:
