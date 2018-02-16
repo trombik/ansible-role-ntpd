@@ -1,3 +1,7 @@
+## Release 1.4.0
+
+* 1471b51 [feature][bugfix] remove obsolete modules and attributes, support FreeBSD 11.1 (#3)
+
 ## Release 1.3.0
 
 * 7c6934f [feature] make ntpd_leapfile optional (#25)
