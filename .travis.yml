@@ -70,7 +70,7 @@ script:
   - export PATH="${PATH}:`rvm gemdir`/bin"
 
   # bundle up because rubocop is installed via Gemfile
-  - bundle install --path vendor/bundle
+  - bundle install --path ${HOME}/.bundler
 
   # run rubocop
   - bundle exec rubocop
