@@ -7,5 +7,30 @@
       - time2.google.com
       - time3.google.com
       - time4.google.com
-    ntpd_leapfile: ""
+    ntpd_pools:
+      - 0.pool.ntp.org
+      - 1.pool.ntp.org
+      - 2.pool.ntp.org
+      - 3.pool.ntp.org
     ntpd_leap_seconds_url: ""
+    ntpd_config: |
+      {% for s in ntpd_upstreams %}
+      server {{ s }} iburst
+      restrict {{ s }} nomodify notrap noquery
+      {% endfor %}
+
+      {% if ntpd_supports_pool %}
+      restrict default ignore
+      restrict -6 default ignore
+      pool {{ ntpd_pools | first }} iburst
+      restrict source nomodify noquery notrap
+      {% else %}
+      restrict default -4 nomodify nopeer noquery notrap
+      restrict default -6 nomodify nopeer noquery notrap
+      {% for p in ntpd_pools %}
+      server {{ p }} iburst
+      {% endfor %}
+      {% endif %}
+
+      restrict localhost
+      driftfile "{{ ntpd_driftfile }}"
