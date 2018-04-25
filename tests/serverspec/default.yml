@@ -2,8 +2,39 @@
   roles:
     - ansible-role-ntpd
   vars:
-    ntpd_upstreams:
+    upstreams:
       - time1.google.com
       - time2.google.com
       - time3.google.com
       - time4.google.com
+    # Servers provided by DNS round robin must be added to `pools` because
+    # special treatment for restrictions is required.  ntpd >= 4.2.7 supports `pool`
+    # directive and a delegate pool name can be used.  see
+    # http://support.ntp.org/bin/view/Support/ConfiguringNTP#Section_6.10 for detail
+    pools:
+      - 0.pool.ntp.org
+      - 1.pool.ntp.org
+      - 2.pool.ntp.org
+      - 3.pool.ntp.org
+    ntpd_config: |
+      {% for s in upstreams %}
+      server {{ s }} iburst
+      restrict {{ s }} nomodify notrap noquery
+      {% endfor %}
+
+      {% if ntpd_supports_pool %}
+      restrict default ignore
+      restrict -6 default ignore
+      pool {{ pools | first }} iburst
+      restrict source nomodify noquery notrap
+      {% else %}
+      restrict default -4 nomodify nopeer noquery notrap
+      restrict default -6 nomodify nopeer noquery notrap
+      {% for p in pools %}
+      server {{ p }} iburst
+      {% endfor %}
+      {% endif %}
+
+      restrict localhost
+      leapfile "{{ ntpd_leapfile }}"
+      driftfile "{{ ntpd_driftfile }}"

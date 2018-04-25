@@ -1,3 +1,16 @@
+## Release x.y.z
+
+This release introduces backward-incompatibilities.
+
+The following variables are removed from the role.
+
+* `ntpd_role`
+* `ntpd_upstreams`
+* `ntpd_pools`
+
+The template for `ntp.conf` is now empty by default. Define `ntpd_config` and
+build your own configuration.
+
 ## Release 1.4.0
 
 * 1471b51 [feature][bugfix] remove obsolete modules and attributes, support FreeBSD 11.1 (#3)
