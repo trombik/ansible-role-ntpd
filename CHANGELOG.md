@@ -1,4 +1,6 @@
-## Release x.y.z
+## Release 2.0.0
+
+* d4c2a12 [bugfix][backward-incompatible] simplify the template for `ntp.conf` (#6)
 
 This release introduces backward-incompatibilities.
 
